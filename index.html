@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoJourney Challenge</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <nav id="sidebar">
+        <div class="logo">🌿 EcoJourney</div>
+        <ul>
+            <li id="menu-login" onclick="showPage('login')"><i class="fas fa-user"></i> Логин</li>
+            <li id="menu-map" onclick="showPage('map')"><i class="fas fa-map-marked-alt"></i> Карта проблем</li>
+            <li id="menu-tasks" onclick="showPage('tasks')"><i class="fas fa-tasks"></i> Задания</li>
+            <li id="menu-rating" onclick="showPage('rating')"><i class="fas fa-trophy"></i> Рейтинг</li>
+            <li id="menu-market" onclick="showPage('market')"><i class="fas fa-shopping-basket"></i> Маркет</li>
+            <li id="menu-test" onclick="showPage('test')"><i class="fas fa-vial"></i> Диагностика</li>
+            <li id="menu-social" onclick="showPage('social')"><i class="fas fa-share-alt"></i> Соцсети</li>
+        </ul>
+        <div class="score-display">Баллы: <span id="userScore">0</span></div>
+    </nav>
+
+    <main id="content">
+
+        <!-- ЛОГИН -->
+        <section id="login" class="page active">
+            <h1>Добро пожаловать!</h1>
+            <div class="card">
+                <h3>Регистрация эко-героя</h3>
+                <input type="text" id="nickInput" placeholder="Введите ваш никнейм">
+                <select id="citySelect" onchange="checkCity(this.value)">
+                    <option value="Aktobe">Актобе</option>
+                    <option value="Almaty">Алматы</option>
+                    <option value="Astana">Астана</option>
+                    <option value="other">Другой город...</option>
+                </select>
+                <input type="text" id="otherCityInput" placeholder="Введите название города" style="display:none;">
+                <button onclick="login()">Войти</button>
+            </div>
+        </section>
+
+        <!-- КАРТА -->
+        <section id="map" class="page">
+            <h1>📍 Эко-точки города</h1>
+            <div class="map-placeholder">
+                <div class="icons-row">
+                    <div class="marker" onclick="showProblem('park')">🌳</div>
+                    <div class="marker" onclick="showProblem('river')">🌊</div>
+                </div>
+            </div>
+            <div id="problemDetail" class="card" style="display:none; margin-top: 20px;">
+                <h3 id="probTitle"></h3>
+                <img id="probImg" src="" style="width:100%; border-radius:10px;">
+                <p id="probDesc"></p>
+            </div>
+        </section>
+
+        <!-- ЗАДАНИЯ -->
+        <section id="tasks" class="page">
+            <h1>🏆 Эко-челленджи</h1>
+            <div class="task-card">
+                <h3>📸 Фотофиксация</h3>
+                <p>Сфоткай мусор и отправь в приложение (+10)</p>
+                <input type="file" id="file1" accept="image/*" class="file-input">
+                <button onclick="uploadAndEarn(1, 10)">Отправить фото</button>
+            </div>
+            <div class="task-card">
+                <h3>♻️ Навигатор</h3>
+                <p>Найди ближайший пункт переработки (+30)</p>
+                <input type="file" id="file2" accept="image/*" class="file-input">
+                <button onclick="uploadAndEarn(2, 30)">Отправить фото</button>
+            </div>
+            <div class="task-card">
+                <h3>🤝 Тазалау-акция</h3>
+                <p>Собери команду для уборки (+50)</p>
+                <input type="file" id="file3" accept="image/*" class="file-input">
+                <button onclick="uploadAndEarn(3, 50)">Отправить фото</button>
+            </div>
+        </section>
+
+        <!-- РЕЙТИНГ -->
+        <section id="rating" class="page">
+            <h1>📊 Топ участников</h1>
+            <table>
+                <tr><th>Место</th><th>Никнейм</th><th>Баллы</th></tr>
+                <tr><td>1</td><td>GreenMaster</td><td>950</td></tr>
+                <tr class="user-row"><td>2</td><td id="displayNick">Ты</td><td id="tableScore">0</td></tr>
+                <tr><td>3</td><td>EcoWarrior</td><td>820</td></tr>
+                <tr><td>4</td><td>Aktobe_Clean</td><td>750</td></tr>
+                <tr><td>5</td><td>NatureLover</td><td>610</td></tr>
+                <tr><td>6</td><td>Almaty_Eco</td><td>540</td></tr>
+                <tr><td>7</td><td>ZeroWaste</td><td>490</td></tr>
+                <tr><td>8</td><td>RecycleHero</td><td>430</td></tr>
+                <tr><td>9</td><td>GreenCity</td><td>380</td></tr>
+                <tr><td>10</td><td>EcoFriend</td><td>310</td></tr>
+                <tr><td>11</td><td>PlantTree</td><td>250</td></tr>
+                <tr><td>12</td><td>CleanRiver</td><td>180</td></tr>
+                <tr><td>13</td><td>TazaStep</td><td>90</td></tr>
+            </table>
+        </section>
+
+        <!-- МАРКЕТ (НОВЫЙ РАЗДЕЛ) -->
+        <section id="market" class="page">
+            <h1>🎁 Эко-Маркет</h1>
+            <p>Обменяй свои баллы на крутые бонусы!</p>
+            <div class="market-grid">
+                <div class="item-card">
+                    <div class="item-icon">☕</div>
+                    <h4>Скидка на кофе</h4>
+                    <p>Свой стакан — это круто</p>
+                    <button class="buy-btn" onclick="buyItem(50, 'Скидка на кофе')">50 баллов</button>
+                </div>
+                <div class="item-card">
+                    <div class="item-icon">🛍️</div>
+                    <h4>Стильный шопер</h4>
+                    <p>Нет пластиковым пакетам</p>
+                    <button class="buy-btn" onclick="buyItem(200, 'Эко-шопер')">200 баллов</button>
+                </div>
+                <div class="item-card">
+                    <div class="item-icon">🎟️</div>
+                    <h4>Билет в кино</h4>
+                    <p>За вклад в экологию</p>
+                    <button class="buy-btn" onclick="buyItem(500, 'Билет в кино')">500 баллов</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ДИАГНОСТИКА -->
+        <section id="test" class="page">
+            <h1>🧠 Эко-диагностика</h1>
+            <div id="quiz-container" class="card">
+                <div id="question-area">
+                    <p id="question-text">Готовы проверить свой эко-уровень?</p>
+                    <button onclick="startQuiz()">Начать тест</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- СОЦСЕТИ -->
+        <section id="social" class="page">
+            <h1>📢 Наши соцсети</h1>
+            <div class="social-grid">
+                <a href="https://instagram.com" target="_blank" class="social-btn inst"><i class="fab fa-instagram"></i> Instagram</a>
+                <a href="https://tiktok.com" target="_blank" class="social-btn tt"><i class="fab fa-tiktok"></i> TikTok</a>
+                <a href="https://t.me" target="_blank" class="social-btn tg"><i class="fab fa-telegram"></i> Telegram</a>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
