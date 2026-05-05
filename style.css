@@ -29,7 +29,46 @@ th { background: #2d6a4f; color: white; }
 .item-icon { font-size: 40px; margin-bottom: 10px; }
 .buy-btn { background: #b7e4c7; color: #1b4332; }
 .buy-btn:hover { background: #95d5b2; }
+/* Адаптация для мобильных устройств */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column; /* Складываем меню и контент вертикально */
+    }
 
+    #sidebar {
+        width: 100%;
+        height: auto;
+        position: relative; /* Убираем фиксацию слева */
+        padding: 10px;
+    }
+
+    #sidebar ul {
+        display: flex;
+        overflow-x: auto; /* Позволяем меню прокручиваться вбок */
+        white-space: nowrap;
+        gap: 10px;
+    }
+
+    li {
+        padding: 10px 15px;
+        background: #2d6a4f;
+    }
+
+    #content {
+        margin-left: 0; /* Убираем отступ, так как меню теперь сверху */
+        padding: 20px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .card, .task-card {
+        max-width: 100%; /* Карточки на весь экран */
+    }
+
+    .market-grid {
+        grid-template-columns: 1fr; /* В маркете товары в один ряд */
+    }
+}
 /* Соцсети */
 .social-grid { display: flex; flex-direction: column; gap: 15px; max-width: 300px; }
 .social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 15px; border-radius: 10px; text-decoration: none; color: white; font-weight: bold; transition: 0.3s; }
